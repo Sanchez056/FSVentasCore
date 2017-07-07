@@ -13,7 +13,7 @@ namespace FSVentasCore.Models
         public int UsuarioId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         [Display(Name = "Introducir su Nombre")]
-        public string Nombre { get; set; }
+        public string Nombres { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         [Display(Name = "Introducir su Contraseña")]
         public string Contraseña { get; set; }

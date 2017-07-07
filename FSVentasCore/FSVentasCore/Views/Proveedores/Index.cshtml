@@ -1,0 +1,89 @@
+@model IEnumerable<FSVentasCore.Models.Proveedores>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MarcaId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProvinciaId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CiudadId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MunicipioId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Direccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telefono)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fax)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Correo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarcaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProvinciaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CiudadId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MunicipioId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProveedorId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProveedorId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProveedorId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
