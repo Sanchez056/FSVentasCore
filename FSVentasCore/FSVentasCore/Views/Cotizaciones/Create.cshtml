@@ -1,0 +1,223 @@
+@model FSVentasCore.Models.Cotizaciones
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ventas</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="Fecha" class="col-md-2 control-label"></label>
+                    <input asp-for="Fecha" class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+            <label asp-for="Cliente" class="col-md-2 control-label"></label>
+                <input asp-for="Cliente" class="form-control" />
+                <span asp-validation-for="Cliente" class="text-danger"></span>
+        <div class="form-group" size="100">
+            <label>Articulos</label>
+            <div class="input-group">
+                <select class="form-control selected" id="ComboBox" onchange="Seleccionar()"></select>
+                <input class="form-control input-group-sm col-2" type="text" id="tbPrecio" readonly placeholder="Precio" />
+                <input class="form-control input-group-sm col-2" type="text" id="tbCantidad" placeholder="Cantidad" />
+                <button type="button" class="btn btn-default" id="btnAgregar" onclick="AgregarDetalle()">Agregar</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm table-bordered" id="tDetalle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Articulo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Sub-Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody"></tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Monto:</span>
+                <input class="form-control input-group-lg col-2" type="text" id="tbMonto" value="0" readonly />
+            </div>
+        </div>
+        <div class="form-group text-center col-xl-12">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-default col-sm-2" id="btnCrear" onclick="CrearCotizacion()">Crear</button>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                CargarArticulos();
+                
+            })
+
+            function CrearDetalle(Id) {
+
+                $('#tbBody tr').each(function () {
+                    var detalles = new Array();
+                    var cotizacionId = Id;
+                    var articulo = $(this).find('td').eq(1).html();
+                    var precio = $(this).find('td').eq(2).html();
+                    var cantidad = $(this).find('td').eq(3).html();
+                    var subTotal = $(this).find('td').eq(4).html();
+                    var monto = $("#tbMonto").val();
+
+                    detalles.push(
+                        {
+                            Id: 0,
+                            CotizacionId: cotizacionId,
+                            ArticuloId: articulo,
+                            Precio: precio,
+                            Monto: monto,
+                            Cantidad: cantidad
+                        });
+
+                    //alert(detalles);
+                    SentDetails(detalles);
+                });
+
+            }
+
+            function AgregarDetalle() {
+
+                var long = $("#tbBody tr").length;
+
+                var monto = $('#tbMonto').val();
+                var articulo = $('#ComboBox').find('option:selected');
+                var art = articulo.text();
+                var precio = $("#tbPrecio").val();
+                var cant = $("#tbCantidad").val();
+                var subTotal = precio * cant;
+
+                var fila = "<tr>";
+                fila += "<td>" + (long + 1) + "</td>";
+                fila += "<td>" + art + "</td>";
+                fila += "<td>" + precio + "</td>";
+                fila += "<td>" + cant + "</td>";
+                fila += "<td>" + subTotal + "</td>";
+                fila += "</tr>";
+
+                monto = parseFloat(subTotal) + parseFloat(monto);
+
+                $('#tDetalle tbody').append(fila);
+
+                $('#tbMonto').val(monto);
+            }
+
+            function SentDetails(detail) {
+                var pack = JSON.stringify(detail);
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/CotizacionesDetalles/Save",
+                        data: pack,
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (!data) {
+                                alert("No se  guardo el detalle");
+                            }
+                            else {
+                                alert("Se Guardo");
+                                Limpiar();
+                            }
+                        }
+                    });
+            }
+
+            function EnviarCotizacion(cotizaciones) {
+                alert(cotizaciones.CotizacionId);
+                $.ajax(
+                    {
+                        method: "POST",
+                        url: "/Cotizaciones/Save",
+                        data: cotizaciones,
+                        success: function (id) {
+                            if (parseInt(id) > 0) {
+                                CrearDetalle(id);
+                            }
+                            else {
+                                alert("");
+                            }
+                        }
+                    });
+            };
+
+            function CrearCotizacion() {
+                var articulo = $('#ComboBox').find('option:selected');
+                var art= articulo.text();
+
+                var cant = $('#tbCantidad').val();
+                var monto = $('#tbMonto').val();
+                var prec = $('#tbPrecio').val();
+                var fec = $('#dpFecha').val();
+                var subtotal = $('#tbSubTotal').val();
+
+                var cotizacion = {
+                    CotizacionId: 0,
+                    Cantidad: cant,
+                    Monto: total,
+                    SubTotal: subtotal,
+                    Fecha: fec,
+                    Precio: prec,
+                    Articulo: art,
+                }
+                EnviarVentas(cotizacion);
+            }
+
+            function Seleccionar() {
+                var precio = $('#ComboBox').find('option:selected').attr('value');
+
+                $('#tbPrecio').val(precio);
+            }
+            function Limpiar() {
+                $('#tbPrecio').val("");
+                $('#tbArticulo').val("");
+                Clear();
+                $('#tbBody tr').remove();
+            }
+            function Clear() {
+                $("#tbArticulo").val("");
+                $("#tbCantidad").val("");
+                $("#tbPrecio").val("");
+                $("#tbSubTotal").val("");
+            }    
+
+
+            function CargarArticulos() {
+                $.getJSON("/Articulos/Lista",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.articuloId;
+                            var nom = lista.nombre;
+                            var prec = lista.precio;
+                            var option = "<option id='" + Id + "'value ='" + prec + "'>" + nom + "</option>";
+                            $('#ComboBox').append(option);
+                        });
+                    });
+            }
+            
+
+            
+        </script>
+    }
+}

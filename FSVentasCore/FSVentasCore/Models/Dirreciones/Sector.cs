@@ -9,7 +9,7 @@ namespace FSVentasCore.Models.Dirreciones
     public class Sector
     {
         [Key]
-        public  int  SerctorId { get; set; }
+        public  int  SectorId { get; set; }
         public  string Nombre { get; set; }
 
     }

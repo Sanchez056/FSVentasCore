@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FSVentasCore.DAL;
 using FSVentasCore.Models;
+using FSVentasCore.BLL;
 
 namespace FSVentasCore.Controllers
 {
@@ -54,6 +55,31 @@ namespace FSVentasCore.Controllers
             ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId");
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo");
             return View();
+        }
+        [HttpGet]
+        public JsonResult Lista(int id)
+        {
+            var listado = ArticulosBLL.GetLista();
+
+            return Json(listado);
+        }
+
+        [HttpPost]
+        public JsonResult Save(Articulos nueva)
+        {
+            int id = 0;
+            if (ModelState.IsValid)
+            {
+                if (ArticulosBLL.Insertar(nueva))
+                {
+                    id = nueva.ArticuloId;
+                }
+            }
+            else
+            {
+                id = +1;
+            }
+            return Json(id);
         }
 
         // POST: Articulos/Create

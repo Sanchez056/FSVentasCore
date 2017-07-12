@@ -1,0 +1,53 @@
+@model IEnumerable<FSVentasCore.Models.CotizacionesDetalles>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CotizacionId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cantidad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrecXund)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubTotal)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CotizacionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecXund)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTotal)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CotizacionDetalleId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CotizacionDetalleId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CotizacionDetalleId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FSVentasCore.DAL;
 using FSVentasCore.Models;
-using FSVentasCore.Models.Dirreciones;
 
 namespace FSVentasCore.Controllers
 {
@@ -55,8 +54,15 @@ namespace FSVentasCore.Controllers
             ViewData["CiudadId"] = new SelectList(_context.Ciudades, "CiudadId", "CiudadId");
             ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId");
             ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId");
-            ViewData["SectorId"] = new SelectList(_context.Set<Sector>(), "SerctorId", "SerctorId");
+            ViewData["SectorId"] = new SelectList(_context.Sector, "SectorId", "SectorId");
             return View();
+        }
+        [HttpGet]
+        public JsonResult Lista(int? id)
+        {
+            var listado = BLL.ClientesBLL.ListarClientes();
+
+            return Json(listado);
         }
 
         // POST: Clientes/Create
@@ -75,7 +81,7 @@ namespace FSVentasCore.Controllers
             ViewData["CiudadId"] = new SelectList(_context.Ciudades, "CiudadId", "CiudadId", clientes.CiudadId);
             ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
             ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Set<Sector>(), "SerctorId", "SerctorId", clientes.SectorId);
+            ViewData["SectorId"] = new SelectList(_context.Sector, "SectorId", "SectorId", clientes.SectorId);
             return View(clientes);
         }
 
@@ -95,7 +101,7 @@ namespace FSVentasCore.Controllers
             ViewData["CiudadId"] = new SelectList(_context.Ciudades, "CiudadId", "CiudadId", clientes.CiudadId);
             ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
             ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Set<Sector>(), "SerctorId", "SerctorId", clientes.SectorId);
+            ViewData["SectorId"] = new SelectList(_context.Sector, "SectorId", "SectorId", clientes.SectorId);
             return View(clientes);
         }
 
@@ -134,7 +140,7 @@ namespace FSVentasCore.Controllers
             ViewData["CiudadId"] = new SelectList(_context.Ciudades, "CiudadId", "CiudadId", clientes.CiudadId);
             ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
             ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Set<Sector>(), "SerctorId", "SerctorId", clientes.SectorId);
+            ViewData["SectorId"] = new SelectList(_context.Sector, "SectorId", "SectorId", clientes.SectorId);
             return View(clientes);
         }
 
