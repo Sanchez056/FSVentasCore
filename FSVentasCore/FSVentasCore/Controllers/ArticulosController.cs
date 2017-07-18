@@ -52,16 +52,16 @@ namespace FSVentasCore.Controllers
         public IActionResult Create()
         {
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre");
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId");
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo");
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre");
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre");
             return View();
         }
         [HttpGet]
         public JsonResult Lista(int id)
         {
-            var listado = ArticulosBLL.GetLista();
+            var lista= ArticulosBLL.GetLista();
 
-            return Json(listado);
+            return Json(lista);
         }
 
         [HttpPost]
@@ -97,7 +97,7 @@ namespace FSVentasCore.Controllers
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
             ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 
@@ -115,8 +115,8 @@ namespace FSVentasCore.Controllers
                 return NotFound();
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", articulos.MarcaId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 
@@ -153,8 +153,8 @@ namespace FSVentasCore.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", articulos.MarcaId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 

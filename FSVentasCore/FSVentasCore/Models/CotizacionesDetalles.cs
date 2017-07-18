@@ -16,11 +16,13 @@ namespace FSVentasCore.Models
 
         public int ArticuloId { get; set; }
 
+        public string Articulo { get; set; }
+
         public int Cantidad { get; set; }
 
-        public decimal PrecXund { get; set; }
+        public decimal Precio{ get; set; }
 
-        public decimal SubTotal { get; set; }
+     
 
         //public Cotizaciones Cotizacion { get; set; }
 

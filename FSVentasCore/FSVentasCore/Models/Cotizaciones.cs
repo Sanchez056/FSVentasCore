@@ -13,13 +13,14 @@ namespace FSVentasCore.Models
         public int CotizacionId { get; set; }
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
-        public string Cliente { get; set; }
-
+        public string ClienteId { get; set; }
+        
+                            
         [DataType(DataType.DateTime)]
         public DateTime Fecha { get; set; }
 
         [DataType(DataType.Currency)]
-        public double Monto { get; set; }
+        public decimal Monto { get; set; }
 
         //public ICollection<CotizacionDetalles> Detalle { get; set; }
 

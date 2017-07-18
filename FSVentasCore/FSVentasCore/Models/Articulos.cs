@@ -63,14 +63,8 @@ namespace FSVentasCore.Models
 
         public virtual ICollection<CotizacionesDetalles> CotizacionesDetalles { get; set; }
 
-        public Articulos()
-        {
-            this.CotizacionesDetalles = new HashSet<CotizacionesDetalles>();
-        }
+        
 
-        public override string ToString()
-        {
-            return string.Format("ArticuloId: {0}, Descripción: {1}", this.ArticuloId, this.Nombre);
-        }
+      
     }
 }

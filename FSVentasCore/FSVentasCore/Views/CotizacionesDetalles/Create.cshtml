@@ -25,6 +25,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="Articulo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Articulo" class="form-control" />
+                <span asp-validation-for="Articulo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="Cantidad" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Cantidad" class="form-control" />
@@ -32,17 +39,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="PrecXund" class="col-md-2 control-label"></label>
+            <label asp-for="Precio" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="PrecXund" class="form-control" />
-                <span asp-validation-for="PrecXund" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SubTotal" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="SubTotal" class="form-control" />
-                <span asp-validation-for="SubTotal" class="text-danger"></span>
+                <input asp-for="Precio" class="form-control" />
+                <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

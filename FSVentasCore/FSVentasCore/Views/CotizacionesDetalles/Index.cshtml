@@ -16,13 +16,13 @@
                     @Html.DisplayNameFor(model => model.CotizacionId)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.Articulo)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Cantidad)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PrecXund)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SubTotal)
+                    @Html.DisplayNameFor(model => model.Precio)
                 </th>
             <th></th>
         </tr>
@@ -34,13 +34,13 @@
                 @Html.DisplayFor(modelItem => item.CotizacionId)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Articulo)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Cantidad)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PrecXund)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubTotal)
+                @Html.DisplayFor(modelItem => item.Precio)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CotizacionDetalleId">Edit</a> |

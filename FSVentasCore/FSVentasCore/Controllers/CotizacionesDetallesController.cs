@@ -19,6 +19,25 @@ namespace FSVentasCore.Controllers
         {
             _context = context;    
         }
+        [HttpPost]
+        public JsonResult Guardar([FromBody]List<CotizacionesDetalles> detalles)
+        {
+            bool resultado = BLL.CotizacionesDetallesBLL.Guardar(detalles);
+            return Json(resultado);
+        }
+        [HttpGet]
+        public JsonResult Listado(int cotizacionId)
+        {
+            List<CotizacionesDetalles> listado = CotizacionesDetallesBLL.Listar(cotizacionId);
+            if (listado != null)
+            {
+                return Json(listado);
+            }
+            else
+            {
+                return Json(0);
+            }
+        }
 
         // GET: CotizacionesDetalles
         public async Task<IActionResult> Index()
@@ -43,12 +62,6 @@ namespace FSVentasCore.Controllers
 
             return View(cotizacionesDetalles);
         }
-        [HttpPost]
-        public JsonResult Save([FromBody]List<CotizacionesDetalles> detalles)
-        {
-            bool resultado = CotizacionesDetallesBLL.Guardar(detalles);
-            return Json(resultado);
-        }
 
         // GET: CotizacionesDetalles/Create
         public IActionResult Create()
@@ -61,7 +74,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CotizacionDetalleId,CotizacionId,ArticuloId,Cantidad,PrecXund,SubTotal")] CotizacionesDetalles cotizacionesDetalles)
+        public async Task<IActionResult> Create([Bind("CotizacionDetalleId,CotizacionId,ArticuloId,Articulo,Cantidad,Precio")] CotizacionesDetalles cotizacionesDetalles)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +106,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CotizacionDetalleId,CotizacionId,ArticuloId,Cantidad,PrecXund,SubTotal")] CotizacionesDetalles cotizacionesDetalles)
+        public async Task<IActionResult> Edit(int id, [Bind("CotizacionDetalleId,CotizacionId,ArticuloId,Articulo,Cantidad,Precio")] CotizacionesDetalles cotizacionesDetalles)
         {
             if (id != cotizacionesDetalles.CotizacionDetalleId)
             {
@@ -122,8 +135,6 @@ namespace FSVentasCore.Controllers
             }
             return View(cotizacionesDetalles);
         }
-        [HttpPost]
-      
 
         // GET: CotizacionesDetalles/Delete/5
         public async Task<IActionResult> Delete(int? id)

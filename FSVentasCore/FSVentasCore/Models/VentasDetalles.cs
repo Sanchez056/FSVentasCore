@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace FSVentasCore.Models
 {
-    public class Ventas
+    public class VentasDetalles
     {
         [Key]
+        public int Id { get; set; }
+
         public int VentaId { get; set; }
 
+        public string ArticuloId { get; set; }
 
-        public string Articulos { get; set; }
+        public decimal Precio { get; set; }
 
         public int Cantidad { get; set; }
 
-        public DateTime FechaVenta { get; set; }
-
-        public decimal Total { get; set; }
-
-        public Ventas()
+        public VentasDetalles()
         {
 
         }

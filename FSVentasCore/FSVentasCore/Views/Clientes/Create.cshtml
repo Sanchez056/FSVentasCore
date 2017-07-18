@@ -5,8 +5,94 @@
 }
 
 <h2>Create</h2>
-
 <form asp-action="Create">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        if ($("#ProvinciaId").val() == '0') {
+            var CiudadesDefaultValue = "<option value='0'>--Select a Ciudades first--</option>";
+            $("#CiudadId").html(CiudadesDefaultValue).show();
+
+        }
+        $(function () {
+            if ($("#CiudadId").val() == '0') {
+                var MunicipiosDefaultValue = "<option value='0'>--Select a Municipios first--</option>";
+                $("#MunicipioId").html(MunicipiosDefaultValue).show();
+
+            }
+            $(function () {
+                if ($("#MunicipioId").val() == '0') {
+                    var SectorDefaultValue = "<option value='0'>--Select a Sector first--</option>";
+                    $("#SectorId").html(MunicipiosDefaultValue).show();
+
+                }
+
+                $("#ProvinciaId").change(function () {
+                    var selectedItemValue = $(this).val();
+
+                    var ddlCiudades = $("#CiudadId");
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: '@Url.Action("GetCiudadByProvinciaId", "Clientes")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlCiudades.html('');
+                    $.each(data, function (id, option) {
+                        ddlCiudades.append($('<option></option>').val(option.CiudadId).html(option.CiudadNombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Ciudad!.');
+                }
+            });
+        });
+            });
+             $("#CiudadId").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlMunicipio = $("#MuncipioId");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetMunicipioIdByCiudadId", "Clientes")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlMunicipio.html('');
+                    $.each(data, function (id, option) {
+                        ddlCiudades.append($('<option></option>').val(option.MunicipioId).html(option.Nombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Ciudad!.');
+                }
+            });
+        });
+        });
+         $("#MunicipioId").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlSector = $("#SectorId");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetSectorIdByMunicipioId", "Clientes")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlSector.html('');
+                    $.each(data, function (id, option) {
+                        ddlSector.append($('<option></option>').val(option.SectorId).html(option.Nombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Ciudad!.');
+                }
+            });
+        });
+    });
+    </script>
+
+
     <div class="form-horizontal">
         <h4>Clientes</h4>
         <hr />
@@ -33,27 +119,32 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="ProvinciaId" class="col-md-2 control-label"></label>
+            @Html.LabelFor(model => model.ProvinciaId, "ProvinciaId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select asp-for="ProvinciaId" class ="form-control" asp-items="ViewBag.ProvinciaId"></select>
+                @Html.DropDownList("ProvinciaId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProvinciaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CiudadId, "CiudadId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CiudadId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CiudadId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="CiudadId" class="col-md-2 control-label"></label>
+            @Html.LabelFor(model => model.MunicipioId, "MunicipioId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select asp-for="CiudadId" class ="form-control" asp-items="ViewBag.CiudadId"></select>
+                @Html.DropDownList("MunicipioId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MunicipioId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="MunicipioId" class="col-md-2 control-label"></label>
+            @Html.LabelFor(model => model.SectorId, "SectorId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select asp-for="MunicipioId" class ="form-control" asp-items="ViewBag.MunicipioId"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SectorId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="SectorId" class ="form-control" asp-items="ViewBag.SectorId"></select>
+                @Html.DropDownList("SectorId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SectorId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
@@ -95,4 +186,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+
 

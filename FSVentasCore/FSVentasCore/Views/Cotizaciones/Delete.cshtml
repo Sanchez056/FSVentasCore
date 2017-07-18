@@ -13,16 +13,20 @@
     <dl class="dl-horizontal">
         <input type="hidden" asp-for="CotizacionId" />
         <dt>
-            @Html.DisplayNameFor(model => model.Cliente)
+            @Html.DisplayNameFor(model => model.ClienteId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Cliente)
+            @Html.DisplayFor(model => model.ClienteId)
         </dd>
+       
+       
         <dt>
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Fecha)
+        </dd>
+     
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Monto)

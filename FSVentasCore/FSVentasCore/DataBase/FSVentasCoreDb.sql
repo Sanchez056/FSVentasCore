@@ -127,6 +127,17 @@ create table Ventas
    
 );
 
+create table VentasDetalles
+(
+   Id int identity (1,1) primary key,
+   CotizacionId int,
+   ArticuloId int,
+   Articulo nvarchar(Max),
+   Cantidad int,
+   Precio Money,
+  
+);
+
 
 
 create table CotizacionesDetalles

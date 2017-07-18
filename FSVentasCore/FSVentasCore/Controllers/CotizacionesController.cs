@@ -19,14 +19,19 @@ namespace FSVentasCore.Controllers
         {
             _context = context;    
         }
-
-        // GET: Cotizaciones
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public JsonResult Buscar(int id)
         {
-            return View(await _context.Cotizaciones.ToListAsync());
+            Cotizaciones cotizacion = CotizacionesBLL.Buscar(id);
+            if (cotizacion != null)
+            {
+                return Json(cotizacion);
+            }
+            else
+                return Json(0);
         }
         [HttpPost]
-        public JsonResult Save(Cotizaciones nueva)
+        public JsonResult Guardar(Cotizaciones nueva)
         {
             int id = 0;
             if (ModelState.IsValid)
@@ -36,15 +41,21 @@ namespace FSVentasCore.Controllers
                     id = nueva.CotizacionId;
                 }
             }
-            //else
-            //{
-            //    id = +1;
-            //}
+            else
+            {
+               id = +1;
+            }
             return Json(id);
         }
 
        
 
+
+        // GET: Cotizaciones
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Cotizaciones.ToListAsync());
+        }
 
         // GET: Cotizaciones/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -75,7 +86,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CotizacionId,Cliente,Fecha,Monto")] Cotizaciones cotizaciones)
+        public async Task<IActionResult> Create([Bind("CotizacionId,ClienteId,Articulo,Fecha,Cantidad,Monto")] Cotizaciones cotizaciones)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +118,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CotizacionId,Cliente,Fecha,Monto")] Cotizaciones cotizaciones)
+        public async Task<IActionResult> Edit(int id, [Bind("CotizacionId,ClienteId,Articulo,Fecha,Cantidad,Monto")] Cotizaciones cotizaciones)
         {
             if (id != cotizaciones.CotizacionId)
             {

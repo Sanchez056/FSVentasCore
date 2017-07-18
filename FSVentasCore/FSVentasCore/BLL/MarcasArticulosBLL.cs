@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace FSVentasCore.BLL
 {
-    public class ArticulosBLL
+    public class MarcasArticulosBLL
     {
-        public static bool Insertar(Articulos a)
+        public static bool Insertar(MarcasArticulos cid)
         {
             bool resultado = false;
-            using (var Conn = new FSVentasCoreDb())
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    var p = Buscar(a.ArticuloId);
+                    var p = Buscar(cid.MarcaId);
                     if (p == null)
-                        Conn.Articulos.Add(a);
+                        db.MarcasArticulos.Add(cid);
                     else
-                        Conn.Entry(a).State = EntityState.Modified;
-                    Conn.SaveChanges();
+                        db.Entry(cid).State = EntityState.Modified;
+                    db.SaveChanges();
                     resultado = true;
                 }
                 catch (Exception)
@@ -33,15 +33,15 @@ namespace FSVentasCore.BLL
             }
             return resultado;
         }
-        public static bool Eliminar(Articulos nuevo)
+        public static bool Eliminar(MarcasArticulos cid)
         {
             bool resultado = false;
-            using (var Conn = new FSVentasCoreDb())
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    Conn.Entry(nuevo).State = EntityState.Deleted;
-                    Conn.SaveChanges();
+                    db.Entry(cid).State = EntityState.Deleted;
+                    db.SaveChanges();
                     resultado = true;
                 }
                 catch (Exception)
@@ -52,14 +52,14 @@ namespace FSVentasCore.BLL
             }
             return resultado;
         }
-        public static Articulos Buscar(int Id)
+        public static MarcasArticulos Buscar(int Id)
         {
-            var c = new Articulos();
-            using (var Conn = new FSVentasCoreDb())
+            var cid = new MarcasArticulos();
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    c = Conn.Articulos.Find(Id);
+                    cid = db.MarcasArticulos.Find(Id);
                 }
                 catch (Exception)
                 {
@@ -67,16 +67,16 @@ namespace FSVentasCore.BLL
                     throw;
                 }
             }
-            return c;
+            return cid;
         }
-        public static List<Articulos> GetLista()
+        public static List<MarcasArticulos> GetLista()
         {
-            var lista = new List<Articulos>();
-            using (var conexion = new FSVentasCoreDb())
+            var lista = new List<MarcasArticulos>();
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    lista = conexion.Articulos.ToList();
+                    lista = db.MarcasArticulos.ToList();
                 }
                 catch (Exception)
                 {
@@ -87,14 +87,14 @@ namespace FSVentasCore.BLL
             return lista;
 
         }
-        public static List<Articulos> GetListaId(int Id)
+        public static List<MarcasArticulos> GetListaId(int Id)
         {
-            List<Articulos> list = new List<Articulos>();
+            List<MarcasArticulos> list = new List<MarcasArticulos>();
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    list = db.Articulos.Where(p => p.ArticuloId == Id).ToList();
+                    list = db.MarcasArticulos.Where(p => p.MarcaId == Id).ToList();
                 }
                 catch (Exception)
                 {
@@ -104,14 +104,14 @@ namespace FSVentasCore.BLL
             }
             return list;
         }
-        public static List<Articulos> ListarArticulos()
+        public static List<MarcasArticulos> ListarArticulos()
         {
-            List<Articulos> listado = null;
-            using (var conexion = new FSVentasCoreDb())
+            List<MarcasArticulos> lista = null;
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    listado = conexion.Articulos.ToList();
+                    lista = db.MarcasArticulos.ToList();
                 }
                 catch (Exception)
                 {
@@ -119,8 +119,7 @@ namespace FSVentasCore.BLL
                     throw;
                 }
             }
-            return listado;
+            return lista;
         }
     }
 }
-

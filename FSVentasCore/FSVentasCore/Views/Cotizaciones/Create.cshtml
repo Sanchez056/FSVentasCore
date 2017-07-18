@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
+<h2>Create</h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -12,14 +13,20 @@
         <h4>Ventas</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                <label asp-for="Fecha" class="col-md-2 control-label"></label>
-                    <input asp-for="Fecha" class="form-control" />
-                    <span asp-validation-for="Fecha" class="text-danger"></span>
-                </div>
-            <label asp-for="Cliente" class="col-md-2 control-label"></label>
-                <input asp-for="Cliente" class="form-control" />
-                <span asp-validation-for="Cliente" class="text-danger"></span>
+        <div class="form-group col-lg-12">
+            <div class="input-group">
+                <input class="form-control input-group-sm col-2" type="text" id="tbId" placeholder="Identificador" />
+                <button type="button" class="btn btn-sm btn-primary" id="btnBuscar" onclick="BuscarCotizacion()">Buscar</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fecha" class="col-md-2 control-label"></label>
+            <input asp-for="Fecha" class="form-control" />
+            <span asp-validation-for="Fecha" class="text-danger"></span>
+        </div>
+        <label asp-for="ClienteId" class="col-md-2 control-label"></label>
+        <input asp-for="ClienteId" class="form-control" />
+        <span asp-validation-for="ClienteId" class="text-danger"></span>
         <div class="form-group" size="100">
             <label>Articulos</label>
             <div class="input-group">
@@ -65,14 +72,16 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 CargarArticulos();
-                
-            })
 
-            function CrearDetalle(Id) {
+            })
+            var detalles = new Array();
+
+
+            function CrearDetalle(CotizacionId) {
 
                 $('#tbBody tr').each(function () {
-                    var detalles = new Array();
-                    var cotizacionId = Id;
+                    var cotId = $('#tbId').val();
+                    var cotizacionId = CotizacionId;
                     var articulo = $(this).find('td').eq(1).html();
                     var precio = $(this).find('td').eq(2).html();
                     var cantidad = $(this).find('td').eq(3).html();
@@ -81,15 +90,17 @@
 
                     detalles.push(
                         {
-                            Id: 0,
+                            CotizacionDetalleId: 0,
                             CotizacionId: cotizacionId,
-                            ArticuloId: articulo,
+                            Articulo: articulo,
                             Precio: precio,
                             Monto: monto,
                             Cantidad: cantidad
                         });
+                    monto = parseFloat(subTotal) + parseFloat(monto);
 
-                    //alert(detalles);
+                    $('#tbMonto').val(monto);
+
                     SentDetails(detalles);
                 });
 
@@ -121,17 +132,19 @@
                 $('#tbMonto').val(monto);
             }
 
+
             function SentDetails(detail) {
                 var pack = JSON.stringify(detail);
+                console.log(detail);
                 $.ajax(
                     {
                         type: "POST",
-                        url: "/CotizacionesDetalles/Save",
+                        url: "/CotizacionesDetalles/Guardar",
                         data: pack,
                         contentType: "application/json",
                         success: function (data) {
                             if (!data) {
-                                alert("No se  guardo el detalle");
+                                alert("No puedo guardar el detalle");
                             }
                             else {
                                 alert("Se Guardo");
@@ -141,12 +154,13 @@
                     });
             }
 
+
+
             function EnviarCotizacion(cotizaciones) {
-                alert(cotizaciones.CotizacionId);
                 $.ajax(
                     {
                         method: "POST",
-                        url: "/Cotizaciones/Save",
+                        url: "/Cotizaciones/Guardar",
                         data: cotizaciones,
                         success: function (id) {
                             if (parseInt(id) > 0) {
@@ -172,13 +186,13 @@
                 var cotizacion = {
                     CotizacionId: 0,
                     Cantidad: cant,
-                    Monto: total,
+                    Monto: monto,
                     SubTotal: subtotal,
                     Fecha: fec,
                     Precio: prec,
                     Articulo: art,
                 }
-                EnviarVentas(cotizacion);
+                EnviarCotizacion(cotizacion);
             }
 
             function Seleccionar() {
@@ -197,8 +211,44 @@
                 $("#tbCantidad").val("");
                 $("#tbPrecio").val("");
                 $("#tbSubTotal").val("");
-            }    
+            }
+            function BuscarDetalles(CotizacionId) {
+                $.getJSON("/CotizacionesDetalles/Listado", { cotizacionId: CotizacionId }, function (Detalles) {
+                    if (Detalles !== 0) {
+                        detalles = Detalles;
+                        CargarDetalles(detalles);
+                    }
+                    else {
+                        alert("No se ha podido cargar el detalle de la Cotizacion...");
+                    }
+                })
+            }
+            function CargarCotizacion(cotizacion) {
 
+                var date = cotizacion.Fecha.split('(');
+                date = date[1].split(')', 1);
+
+                var fecha = new Date(parseInt(date[0]));
+
+                $('#tbId').val(cotizacion.CotizacionId);
+                $('#tbClienteId').val(cotizacion.ClienteId);
+                $('#dpFecha').val(fecha.toLocaleString());
+                $('#tbMonto').val(cotizacion.Monto);
+                BuscarDetalles(cotizacion.CotizacionId);
+            }
+            function BuscarCotizacion() {
+                var Identi = $('#tbId').val();
+                $.getJSON("/Cotizaciones/Buscar", { id: Identi }, function (Cotizacion) {
+                    LimpiarCampos(0);
+                    if (Cotizacion !== 0) {
+                        cotizacion = Cotizacion;
+                        CargarCotizacion(cotizacion);
+                    }
+                    else {
+                        alert("La cotizacion que ha intentado consultar no esta disponible");
+                    }
+                })
+            }
 
             function CargarArticulos() {
                 $.getJSON("/Articulos/Lista",
@@ -207,7 +257,7 @@
                     },
                     function (lista) {
                         $.each(lista, function (index, lista) {
-                            var Id = lista.articuloId;
+                            var Id = lista.articulo;
                             var nom = lista.nombre;
                             var prec = lista.precio;
                             var option = "<option id='" + Id + "'value ='" + prec + "'>" + nom + "</option>";
@@ -215,9 +265,13 @@
                         });
                     });
             }
-            
 
-            
+
+
         </script>
     }
 }
+
+
+
+

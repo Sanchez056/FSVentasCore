@@ -13,11 +13,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="CotizacionId" />
         <div class="form-group">
-            <label asp-for="Cliente" class="col-md-2 control-label"></label>
+            <label asp-for="ClienteId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Cliente" class="form-control" />
-                <span asp-validation-for="Cliente" class="text-danger"></span>
+                <input asp-for="ClienteId" class="form-control" />
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
             </div>
+        </div>
         </div>
         <div class="form-group">
             <label asp-for="Fecha" class="col-md-2 control-label"></label>
@@ -26,6 +27,8 @@
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
         </div>
+       
+     
         <div class="form-group">
             <label asp-for="Monto" class="col-md-2 control-label"></label>
             <div class="col-md-10">

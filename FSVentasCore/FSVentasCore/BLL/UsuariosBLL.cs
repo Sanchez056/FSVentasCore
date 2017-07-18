@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace FSVentasCore.BLL
 {
-    public class ArticulosBLL
+    public class UsuariosBLL
     {
-        public static bool Insertar(Articulos a)
+        public static bool Insertar(Usuarios a)
         {
             bool resultado = false;
-            using (var Conn = new FSVentasCoreDb())
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    var p = Buscar(a.ArticuloId);
+                    var p = Buscar(a.UsuarioId);
                     if (p == null)
-                        Conn.Articulos.Add(a);
+                        db.Usuarios.Add(a);
                     else
-                        Conn.Entry(a).State = EntityState.Modified;
-                    Conn.SaveChanges();
+                        db.Entry(a).State = EntityState.Modified;
+                    db.SaveChanges();
                     resultado = true;
                 }
                 catch (Exception)
@@ -33,15 +33,15 @@ namespace FSVentasCore.BLL
             }
             return resultado;
         }
-        public static bool Eliminar(Articulos nuevo)
+        public static bool Eliminar(Usuarios t)
         {
             bool resultado = false;
-            using (var Conn = new FSVentasCoreDb())
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    Conn.Entry(nuevo).State = EntityState.Deleted;
-                    Conn.SaveChanges();
+                    db.Entry(t).State = EntityState.Deleted;
+                    db.SaveChanges();
                     resultado = true;
                 }
                 catch (Exception)
@@ -52,14 +52,14 @@ namespace FSVentasCore.BLL
             }
             return resultado;
         }
-        public static Articulos Buscar(int Id)
+        public static Usuarios Buscar(int Id)
         {
-            var c = new Articulos();
-            using (var Conn = new FSVentasCoreDb())
+            var c = new Usuarios();
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    c = Conn.Articulos.Find(Id);
+                    c = db.Usuarios.Find(Id);
                 }
                 catch (Exception)
                 {
@@ -69,14 +69,14 @@ namespace FSVentasCore.BLL
             }
             return c;
         }
-        public static List<Articulos> GetLista()
+        public static List<Usuarios> GetLista()
         {
-            var lista = new List<Articulos>();
-            using (var conexion = new FSVentasCoreDb())
+            var lista = new List<Usuarios>();
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    lista = conexion.Articulos.ToList();
+                    lista = db.Usuarios.ToList();
                 }
                 catch (Exception)
                 {
@@ -87,14 +87,14 @@ namespace FSVentasCore.BLL
             return lista;
 
         }
-        public static List<Articulos> GetListaId(int Id)
+        public static List<Usuarios> GetListaId(int Id)
         {
-            List<Articulos> list = new List<Articulos>();
+            List<Usuarios> list = new List<Usuarios>();
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    list = db.Articulos.Where(p => p.ArticuloId == Id).ToList();
+                    list = db.Usuarios.Where(p => p.UsuarioId == Id).ToList();
                 }
                 catch (Exception)
                 {
@@ -104,23 +104,7 @@ namespace FSVentasCore.BLL
             }
             return list;
         }
-        public static List<Articulos> ListarArticulos()
-        {
-            List<Articulos> listado = null;
-            using (var conexion = new FSVentasCoreDb())
-            {
-                try
-                {
-                    listado = conexion.Articulos.ToList();
-                }
-                catch (Exception)
-                {
 
-                    throw;
-                }
-            }
-            return listado;
-        }
     }
 }
 

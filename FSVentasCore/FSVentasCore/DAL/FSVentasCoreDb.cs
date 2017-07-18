@@ -32,5 +32,8 @@ namespace FSVentasCore.DAL
         public DbSet<Sector> Sector { get; set; }
         public DbSet<Cotizaciones> Cotizaciones { get; set; }
         public DbSet<CotizacionesDetalles> CotizacionesDetalles { get; set; }
+        public DbSet<Ventas> Ventas { get; set; }
+        public DbSet<VentasDetalles> VentasDetalles { get; set; }
+
     }
 }

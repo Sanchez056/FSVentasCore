@@ -1,7 +1,5 @@
 ﻿using FSVentasCore.DAL;
 using FSVentasCore.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +7,30 @@ using System.Threading.Tasks;
 
 namespace FSVentasCore.BLL
 {
-    public class CotizacionesBLL
+    public class VentasBLL
     {
-       
-        public static bool Guardar(Cotizaciones nueva)
+        public static bool Guardar(Ventas v)
         {
-           
+
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
-                
+
             {
-                db.Cotizaciones.Add(nueva);
+                db.Ventas.Add(v);
                 db.SaveChanges();
                 resultado = true;
             }
 
             return resultado;
         }
-        public static Cotizaciones Buscar(int? cotizacionId)
+        public static Ventas Buscar(int ventaId)
         {
-            Cotizaciones cotizacion = null;
-            using (var conexion = new FSVentasCoreDb())
+            Ventas venta = null;
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    cotizacion = conexion.Cotizaciones.Find(cotizacionId);
+                    venta = db.Ventas.Find(ventaId);
                 }
                 catch (Exception)
                 {
@@ -41,16 +38,16 @@ namespace FSVentasCore.BLL
                     throw;
                 }
             }
-            return cotizacion;
+            return venta;
         }
-        public static List<Cotizaciones> GetLista()
+        public static List<Ventas> GetLista()
         {
-            var lista = new List<Cotizaciones>();
-            using (var conexion = new FSVentasCoreDb())
+            var lista = new List<Ventas>();
+            using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    lista = conexion.Cotizaciones.ToList();
+                    lista = db.Ventas.ToList();
                 }
                 catch (Exception)
                 {
@@ -63,4 +60,3 @@ namespace FSVentasCore.BLL
         }
     }
 }
-

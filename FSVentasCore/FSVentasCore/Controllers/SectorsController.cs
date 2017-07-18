@@ -22,7 +22,8 @@ namespace FSVentasCore.Controllers
         // GET: Sectors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sector.ToListAsync());
+            var fSVentasCoreDb = _context.Sector.Include(s => s.Municipios);
+            return View(await fSVentasCoreDb.ToListAsync());
         }
 
         // GET: Sectors/Details/5
@@ -34,6 +35,7 @@ namespace FSVentasCore.Controllers
             }
 
             var sector = await _context.Sector
+                .Include(s => s.Municipios)
                 .SingleOrDefaultAsync(m => m.SectorId == id);
             if (sector == null)
             {
@@ -46,6 +48,7 @@ namespace FSVentasCore.Controllers
         // GET: Sectors/Create
         public IActionResult Create()
         {
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SectorId,Nombre")] Sector sector)
+        public async Task<IActionResult> Create([Bind("SectorId,Nombre,MunicipioId")] Sector sector)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace FSVentasCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", sector.MunicipioId);
             return View(sector);
         }
 
@@ -78,6 +82,7 @@ namespace FSVentasCore.Controllers
             {
                 return NotFound();
             }
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", sector.MunicipioId);
             return View(sector);
         }
 
@@ -86,7 +91,7 @@ namespace FSVentasCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SectorId,Nombre")] Sector sector)
+        public async Task<IActionResult> Edit(int id, [Bind("SectorId,Nombre,MunicipioId")] Sector sector)
         {
             if (id != sector.SectorId)
             {
@@ -113,6 +118,7 @@ namespace FSVentasCore.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", sector.MunicipioId);
             return View(sector);
         }
 
@@ -125,6 +131,7 @@ namespace FSVentasCore.Controllers
             }
 
             var sector = await _context.Sector
+                .Include(s => s.Municipios)
                 .SingleOrDefaultAsync(m => m.SectorId == id);
             if (sector == null)
             {
